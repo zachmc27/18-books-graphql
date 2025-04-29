@@ -35,7 +35,6 @@ interface SaveBookArgs {
 }
 
 interface DeleteBookArgs {
-    userId: string,
     bookId: string
 }
 
@@ -62,14 +61,15 @@ const resolvers = {
     },
 
     Mutation: {
-        createUser: async (_parent: unknown, { input }: CreateUserArgs): Promise<{ token: string; user: User }> => {
-            const user = await User.create({ ...input });
+        createUser: async (_parent: unknown, input: CreateUserArgs): Promise<{ token: string; user: User }> => {
+            console.log('hello', input);
+            const user = await User.create(input);
             const token = signToken(user.username, user.email, user.id);
 
             return { user, token };
         },
 
-        login: async (_parent: unknown, { email, password}: LoginArgs): Promise<{ token: string; user: User }> => {
+        loginUser: async (_parent: unknown, { email, password}: LoginArgs): Promise<{ token: string; user: User }> => {
          
             const user = await User.findOne({ email });
 
@@ -101,10 +101,10 @@ const resolvers = {
             throw new AuthenticationError('Could not find user');
         },
         
-        deleteBook: async (_parent: unknown, { userId, bookId}: DeleteBookArgs, context: Context): Promise<User | null> => {
+        deleteBook: async (_parent: unknown, { bookId }: DeleteBookArgs, context: Context): Promise<User | null> => {
             if (context.user) {
                 return await User.findOneAndUpdate(
-                    {_id: userId },
+                    { savedBooks: { bookId: bookId } },
                     { $pull: { savedBooks: { bookId: bookId } } },
                     { new: true }
                 );

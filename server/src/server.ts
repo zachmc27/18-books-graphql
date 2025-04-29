@@ -8,6 +8,7 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { authenticateToken } from './services/auth.js';
 import { typeDefs, resolvers } from './schemas/index.js';
 
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -20,6 +21,7 @@ const startApolloServer = async () => {
 
   const PORT = process.env.PORT || 3001;
   const app = express();
+
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());

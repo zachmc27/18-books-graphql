@@ -49,5 +49,4 @@ type Mutation {
     deleteBook(bookId: ID!): User
 }
 `;
-
 export default typeDefs;
