@@ -22,11 +22,6 @@ type Auth {
     user: User
 }
 
-input UserInput {
-    username: String!
-    email: String!
-    password: String!
-}
 
 input BookInput {
     bookId: String
@@ -43,7 +38,7 @@ type Query {
 }
 
 type Mutation {
-    createUser(input: UserInput!): Auth
+    createUser(username: String!, email: String!, password: String!): Auth
     loginUser(email: String!, password: String!): Auth
     saveBook(input: BookInput!): User
     deleteBook(bookId: ID!): User

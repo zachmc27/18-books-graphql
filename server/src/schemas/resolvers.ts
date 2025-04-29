@@ -61,9 +61,9 @@ const resolvers = {
     },
 
     Mutation: {
-        createUser: async (_parent: unknown, input: CreateUserArgs): Promise<{ token: string; user: User }> => {
-            console.log('hello', input);
-            const user = await User.create(input);
+        createUser: async (_parent: unknown, args: any): Promise<{ token: string; user: User }> => {
+            console.log('hello', args);
+            const user = await User.create(args);
             const token = signToken(user.username, user.email, user.id);
 
             return { user, token };
