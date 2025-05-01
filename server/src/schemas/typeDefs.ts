@@ -26,15 +26,16 @@ input UserInput {
     username: String!
     email: String!
     password: String!
+    savedBooks: [BookInput]
 }
 
 input BookInput {
-    bookId: String
-    authors: [String]
-    description: String
-    image: String
-    title: String
-    link: String
+  authors: [String]
+  description: String
+  bookId: String
+  image: String
+  link: String
+  title: String
 }
 
 type Query {

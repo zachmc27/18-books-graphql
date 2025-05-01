@@ -10,11 +10,19 @@ query singleUser($userId: ID!) {
 }`
 
 export const GET_ME = gql`
-query me {
+  query me {
     me {
-        _id
-        username
-        skills
+      _id
+      username
+      email
+      savedBooks {
+        bookId
+        title
+        authors
+        description
+        image
+        link
+      }
     }
-}
-`
+  }
+`;

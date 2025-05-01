@@ -36,9 +36,9 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
     }
 
     try {
-     const { data }= await addUser({ variables: {...userFormData}});
-
-      Auth.login(data.addUser.token)
+      const { data } = await addUser({ variables: { input: {...userFormData} } } ); 
+      const token = data?.createUser?.token
+      Auth.login(token)
     } catch (err) {
       console.error("Error adding user: ", err);
       setShowAlert(true);

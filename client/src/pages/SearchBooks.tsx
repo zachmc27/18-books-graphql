@@ -17,7 +17,7 @@ import type { GoogleAPIBook } from '../models/GoogleAPIBook';
 
 import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
-import { GET_ME } from '../utils/queries';
+
 
 
 
@@ -68,12 +68,7 @@ const SearchBooks = () => {
     }
   };
 
-  const [saveBook, { error }] = useMutation(SAVE_BOOK, {
-    refetchQueries: [
-      GET_ME,
-      'me'
-    ]
-  })
+  const [saveBook] = useMutation(SAVE_BOOK)
 
   // create function to handle saving a book to our database
   const handleSaveBook = async (bookId: string) => {
@@ -90,7 +85,7 @@ const SearchBooks = () => {
 
     try {
        await saveBook({
-        variables: { input: { ...bookToSave }}
+        variables: { input: bookToSave }
       });
 
       // if book successfully saves to user's account, save book id to state
@@ -155,10 +150,6 @@ const SearchBooks = () => {
                           ? 'This book has already been saved!'
                           : 'Save this Book!'}
                       </Button>
-                    )}
-
-                    {error && (
-                      <div className="my-3 p-3 bg-danger text-white">{error.message}</div>
                     )}
                   </Card.Body>
                 </Card>
