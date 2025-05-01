@@ -1,27 +1,27 @@
 import express from 'express';
-
-import db from './config/connection.js';
-// import routes from './routes/index.js';
+import path from 'node:path';
 import type { Request, Response } from 'express';
-import { ApolloServer } from '@apollo/server';
+import db from './config/connection.js'
+import { ApolloServer } from '@apollo/server';// Note: Import from @apollo/server-express
 import { expressMiddleware } from '@apollo/server/express4';
-import { authenticateToken } from './services/auth.js';
 import { typeDefs, resolvers } from './schemas/index.js';
+import { authenticateToken } from './services/auth.js';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers,
+  resolvers
 });
 
 const startApolloServer = async () => {
-
   await server.start();
   await db();
 
   const PORT = process.env.PORT || 3001;
   const app = express();
-
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
@@ -33,10 +33,14 @@ const startApolloServer = async () => {
   ));
 
   if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('../client/dist'));
+    const distPath = path.resolve(__dirname, '../../client', 'dist');
+    console.log('Serving static files from:', distPath); // Log for debugging
+    app.use(express.static(distPath));
 
     app.get('*', (_req: Request, res: Response) => {
-      res.sendFile('../../client/dist/index.html');
+      const indexPath = path.join(distPath, 'index.html');
+      console.log('Serving index from:', indexPath); // Log for debugging
+      res.sendFile(indexPath);
     });
   }
 
@@ -46,5 +50,4 @@ const startApolloServer = async () => {
   });
 };
 
-// Call the async function to start the server
 startApolloServer();
