@@ -42,9 +42,7 @@ interface DeleteBookArgs {
     bookId: string
 }
 
-interface Context {
-    user?: User;
-}
+
 
 const resolvers = {
     Query: {
